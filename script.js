@@ -1,18 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Merge PDFs
+    // PDF Merge Function
     document.getElementById("mergeButton").addEventListener("click", async function () {
-        const fileInput = document.getElementById("pdfFiles");
-        const files = fileInput.files;
+        const fileInput1 = document.getElementById("mergePdfFile1");
+        const fileInput2 = document.getElementById("mergePdfFile2");
 
-        if (files.length < 2) {
-            alert("Please select at least two PDF files to merge.");
+        if (!fileInput1.files.length || !fileInput2.files.length) {
+            alert("Please select two PDF files to merge.");
             return;
         }
 
         const formData = new FormData();
-        for (let i = 0; i < files.length; i++) {
-            formData.append("pdfs", files[i]);
-        }
+        formData.append("pdf1", fileInput1.files[0]);
+        formData.append("pdf2", fileInput2.files[0]);
 
         try {
             const response = await fetch("/merge", {
@@ -39,18 +38,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Extract text from PDF
+    // PDF Text Extraction Function
     document.getElementById("extractButton").addEventListener("click", async function () {
-        const fileInput = document.getElementById("pdfFiles");
-        const files = fileInput.files;
+        const fileInput = document.getElementById("extractPdfFile");
 
-        if (files.length === 0) {
-            alert("Please select a PDF file to extract text from.");
+        if (!fileInput.files.length) {
+            alert("Please select a PDF file for text extraction.");
             return;
         }
 
         const formData = new FormData();
-        formData.append("pdf", files[0]);
+        formData.append("pdf", fileInput.files[0]);
 
         try {
             const response = await fetch("/extract", {
@@ -59,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             if (!response.ok) {
-                throw new Error("Failed to extract text");
+                throw new Error("Failed to extract text.");
             }
 
             const text = await response.text();
