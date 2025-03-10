@@ -24,7 +24,30 @@ async function mergePDFs() {
     // Add pages from the first PDF
     for (let i = 0; i < pdfDoc1.getPageCount(); i++) {
         const [page] = await mergedPdf.copyPages(pdfDoc1, [i]);
-        mergedPdf.addP
+        mergedPdf.addPage(page);
+    }
+
+    // Add pages from the second PDF
+    for (let i = 0; i < pdfDoc2.getPageCount(); i++) {
+        const [page] = await mergedPdf.copyPages(pdfDoc2, [i]);
+        mergedPdf.addPage(page);
+    }
+
+    // Log the number of pages in the merged PDF for verification
+    console.log('Merged PDF pages:', mergedPdf.getPageCount());
+
+    // Save the merged PDF
+    const mergedPdfBytes = await mergedPdf.save();
+
+    const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+
+    // Create a download link for the merged PDF
+    const downloadLink = document.getElementById('downloadLink');
+    downloadLink.href = url;
+    downloadLink.download = 'merged.pdf';
+    downloadLink.style.display = 'block';
+}
 
 
 
