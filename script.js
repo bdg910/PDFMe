@@ -29,8 +29,11 @@ async function mergePDFs() {
         if (!pages1 || pages1.length === 0) {
             throw new Error('PDF 1 has no pages.');
         }
-        for (const page of pages1) {
-            const [copiedPage] = await mergedPdf.copyPages(pdfDoc1, [page.index]);
+
+        // Instead of passing an array of indices, loop through the pages
+        for (let i = 0; i < pages1.length; i++) {
+            const page = pages1[i];
+            const [copiedPage] = await mergedPdf.copyPages(pdfDoc1, [i]); // Use index `i`
             mergedPdf.addPage(copiedPage);
         }
 
@@ -39,8 +42,11 @@ async function mergePDFs() {
         if (!pages2 || pages2.length === 0) {
             throw new Error('PDF 2 has no pages.');
         }
-        for (const page of pages2) {
-            const [copiedPage] = await mergedPdf.copyPages(pdfDoc2, [page.index]);
+
+        // Loop through the pages of the second PDF
+        for (let i = 0; i < pages2.length; i++) {
+            const page = pages2[i];
+            const [copiedPage] = await mergedPdf.copyPages(pdfDoc2, [i]); // Use index `i`
             mergedPdf.addPage(copiedPage);
         }
 
