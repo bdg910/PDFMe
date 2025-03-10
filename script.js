@@ -1,27 +1,36 @@
+document.getElementById('mergeButton').addEventListener('click', mergePDFs);
+
 async function mergePDFs() {
-    const input = document.getElementById("pdfInput");
-    if (input.files.length < 2) {
-        alert("Please select at least two PDFs to merge.");
+    const file1 = document.getElementById('file1').files[0];
+    const file2 = document.getElementById('file2').files[0];
+
+    if (!file1 || !file2) {
+        alert('Please select two PDF files to merge.');
         return;
     }
 
-    const pdfDoc = await PDFLib.PDFDocument.create();
+    const arrayBuffer1 = await file1.arrayBuffer();
+    const arrayBuffer2 = await file2.arrayBuffer();
 
-    for (const file of input.files) {
-        const arrayBuffer = await file.arrayBuffer(); // Read file as ArrayBuffer
-        const existingPdf = await PDFLib.PDFDocument.load(arrayBuffer);
-        const copiedPages = await pdfDoc.copyPages(existingPdf, existingPdf.getPageIndices());
-        
-        copiedPages.forEach(page => pdfDoc.addPage(page)); // Add pages correctly
-    }
+    const pdfDoc1 = await PDFLib.PDFDocument.load(arrayBuffer1);
+    const pdfDoc2 = await PDFLib.PDFDocument.load(arrayBuffer2);
 
-    const mergedPdfBytes = await pdfDoc.save();
-    const blob = new Blob([mergedPdfBytes], { type: "application/pdf" });
+    const mergedPdf = await PDFLib.PDFDocument.create();
 
-    const link = document.getElementById("downloadLink");
-    link.href = URL.createObjectURL(blob);
-    link.style.display = "block";
-    link.textContent = "Download Merged PDF";
+    const pages1 = await mergedPdf.copyPages(pdfDoc1, pdfDoc1.getPageIndices());
+    pages1.forEach(page => mergedPdf.addPage(page));
+
+    const pages2 = await mergedPdf.copyPages(pdfDoc2, pdfDoc2.getPageIndices());
+    pages2.forEach(page => mergedPdf.addPage(page));
+
+    const mergedPdfBytes = await mergedPdf.save();
+
+    const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+
+    const downloadLink = document.getElementById('downloadLink');
+    downloadLink.href = url;
+    downloadLink.download = 'merged.pdf';
+    downloadLink.style.display = 'block';
 }
-
 
