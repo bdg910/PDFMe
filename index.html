@@ -3,38 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Merger & Text Extractor</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-        }
-        input, button {
-            margin: 10px;
-            display: block;
-        }
-    </style>
+    <title>PDF Tool</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Merge PDFs & Extract Text</h1>
-
-    <!-- PDF Merging Section -->
-    <h2>Merge PDFs</h2>
-    <label>Select first PDF:</label>
-    <input type="file" id="mergePdfFile1">
-    
-    <label>Select second PDF:</label>
-    <input type="file" id="mergePdfFile2">
-    
-    <button id="mergeButton">Merge PDFs</button>
-
-    <!-- PDF Text Extraction Section -->
-    <h2>Extract Text from PDF</h2>
-    <label>Select a PDF for text extraction:</label>
-    <input type="file" id="extractPdfFile">
-    <button id="extractButton">Extract Text</button>
-
+    <div class="container">
+        <h1>PDF Tool</h1>
+        <div class="tool">
+            <h2>Merge PDFs</h2>
+            <input type="file" id="mergeFile1" accept="application/pdf">
+            <input type="file" id="mergeFile2" accept="application/pdf">
+            <button id="mergeButton">Merge PDFs</button>
+        </div>
+        <div class="tool">
+            <h2>Split PDF</h2>
+            <input type="file" id="splitFile" accept="application/pdf">
+            <input type="number" id="splitPage" placeholder="Enter page number to split">
+            <button id="splitButton">Split PDF</button>
+        </div>
+        <div class="tool">
+            <h2>Add Watermark</h2>
+            <input type="file" id="watermarkFile" accept="application/pdf">
+            <input type="text" id="watermarkText" placeholder="Enter watermark text">
+            <button id="watermarkButton">Add Watermark</button>
+        </div>
+        <div class="tool">
+            <h2>Compress PDF</h2>
+            <input type="file" id="compressFile" accept="application/pdf">
+            <button id="compressButton">Compress PDF</button>
+        </div>
+        <div class="tool">
+            <h2>Add Page Numbers</h2>
+            <input type="file" id="pageNumberFile" accept="application/pdf">
+            <button id="pageNumberButton">Add Page Numbers</button>
+        </div>
+        <div class="tool">
+            <h2>Rotate PDF</h2>
+            <input type="file" id="rotateFile" accept="application/pdf">
+            <select id="rotateAngle">
+                <option value="90">90°</option>
+                <option value="180">180°</option>
+                <option value="270">270°</option>
+            </select>
+            <button id="rotateButton">Rotate PDF</button>
+        </div>
+        <a id="downloadLink" style="display:none;">Download PDF</a>
+    </div>
+    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
