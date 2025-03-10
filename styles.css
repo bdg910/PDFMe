@@ -14,11 +14,20 @@ body {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 400px;
+    max-width: 500px;
+    width: 100%;
 }
 
-input[type="file"] {
+.tool {
+    margin-bottom: 20px;
+}
+
+input[type="file"], input[type="text"], input[type="number"], select {
     margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 button {
@@ -28,7 +37,6 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px;
 }
 
 button:hover {
@@ -37,7 +45,7 @@ button:hover {
 
 a {
     display: block;
-    margin-top: 10px;
+    margin-top: 20px;
     color: #007bff;
     text-decoration: none;
 }
@@ -45,13 +53,3 @@ a {
 a:hover {
     text-decoration: underline;
 }
-
-pre {
-    background: #f4f4f4;
-    padding: 10px;
-    border-radius: 5px;
-    max-height: 200px;
-    overflow-y: auto;
-    text-align: left;
-}
-
