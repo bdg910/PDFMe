@@ -3,28 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merge & OCR PDFs</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>PDF Merger & Text Extractor</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Merge & OCR PDFs</h1>
+    <h1>Merge PDFs & Extract Text</h1>
 
-        <h3>Merge PDFs</h3>
-        <input type="file" id="file1" accept="application/pdf">
-        <input type="file" id="file2" accept="application/pdf">
-        <button id="mergeButton">Merge PDFs</button>
-        <a id="downloadLink" style="display:none;">Download Merged PDF</a>
+    <input type="file" id="pdfFiles" multiple>
+    <button id="mergeButton">Merge PDFs</button>
+    <button id="extractButton">Extract Text</button>
 
-        <h3>Extract Text (OCR)</h3>
-        <input type="file" id="ocrFile" accept="application/pdf">
-        <button id="ocrButton">Extract Text</button>
-        <pre id="ocrResult"></pre>
-        <a id="downloadText" style="display:none;">Download Extracted Text</a>
-    </div>
-
-    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.0.2/tesseract.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
+
