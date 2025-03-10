@@ -8,14 +8,11 @@ async function mergePDFs() {
     const pdfDoc = await PDFLib.PDFDocument.create();
 
     for (const file of input.files) {
-        const reader = new FileReader();
-        reader.readAsArrayBuffer(file);
-        
-        await new Promise(resolve => reader.onload = resolve);
-
-        const existingPdf = await PDFLib.PDFDocument.load(reader.result);
+        const arrayBuffer = await file.arrayBuffer(); // Read file as ArrayBuffer
+        const existingPdf = await PDFLib.PDFDocument.load(arrayBuffer);
         const copiedPages = await pdfDoc.copyPages(existingPdf, existingPdf.getPageIndices());
-        copiedPages.forEach(page => pdfDoc.addPage(page));
+        
+        copiedPages.forEach(page => pdfDoc.addPage(page)); // Add pages correctly
     }
 
     const mergedPdfBytes = await pdfDoc.save();
@@ -26,4 +23,5 @@ async function mergePDFs() {
     link.style.display = "block";
     link.textContent = "Download Merged PDF";
 }
+
 
