@@ -4,15 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF Merger</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/pdf-lib@1.16.0"></script> <!-- PDF-Lib.js -->
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.16.0/dist/pdf-lib.min.js"></script>
 </head>
 <body>
-    <h2>Merge PDFs Online</h2>
+    <h2>Merge PDFs</h2>
     <input type="file" id="pdfInput" multiple accept="application/pdf">
-    <button onclick="mergePDFs()">Merge PDFs</button>
-    <br><br>
-    <a id="downloadLink" style="display:none" download="merged.pdf">Download Merged PDF</a>
-    <script src="script.js"></script>
+    <button onclick="mergePDFs()">Merge</button>
+    <a id="downloadLink" style="display:none" download="merged.pdf"></a>
+
+    <script>
+        async function mergePDFs() {
+            const input = document.getElementById("pdfInput");
+            if (input.files.length < 2) {
+                alert("Please select at least two PDFs to merge.");
+                return;
+            }
+
+            const pdfDoc = await PDFLib.PDFDocument.create();
+            
+            for (const file of input.files) {
+                const reader = new FileReader();
+                reader.readAsArrayBuffer(file);
+                await new Promise(resolve => reader.onload = resolve);
+                
+                const existingPdf = await PDFLib.PDFDocument.load(reader.result);
+                const copiedPages = await pdfDoc.copyPages(existingPdf, existingPdf.getPageIndices());
+                copiedPages.forEach(page => pdfDoc.addPage(page));
+            }
+
+            const mergedPdfBytes = await pdfDoc.save();
+            const blob = new Blob([mergedPdfBytes], { type: "application/pdf" });
+
+            const link = document.getElementById("downloadLink");
+            link.href = URL.createObjectURL(blob);
+            link.style.display = "block";
+            link.textContent = "Download Merged PDF";
+        }
+    </script>
 </body>
 </html>
+
