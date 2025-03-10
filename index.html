@@ -4,15 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF Merger & Text Extractor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        input, button {
+            margin: 10px;
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <h1>Merge PDFs & Extract Text</h1>
 
-    <input type="file" id="pdfFiles" multiple>
+    <label>Select PDFs for Merging:</label>
+    <input type="file" id="mergePdfFiles" multiple>
     <button id="mergeButton">Merge PDFs</button>
+
+    <label>Select a PDF for Text Extraction:</label>
+    <input type="file" id="extractPdfFile">
     <button id="extractButton">Extract Text</button>
 
     <script src="script.js"></script>
 </body>
 </html>
-
