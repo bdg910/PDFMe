@@ -28,17 +28,17 @@ async function mergePDFs() {
 
     // Copy pages from the first PDF (file 1)
     const pages1 = pdfDoc1.getPages();
-    pages1.forEach(page => {
+    for (const page of pages1) {
         const [copiedPage] = await mergedPdf.copyPages(pdfDoc1, [page.index]);
         mergedPdf.addPage(copiedPage);
-    });
+    }
 
     // Copy pages from the second PDF (file 2)
     const pages2 = pdfDoc2.getPages();
-    pages2.forEach(page => {
+    for (const page of pages2) {
         const [copiedPage] = await mergedPdf.copyPages(pdfDoc2, [page.index]);
         mergedPdf.addPage(copiedPage);
-    });
+    }
 
     // Save the merged PDF as a byte array
     const mergedPdfBytes = await mergedPdf.save();
