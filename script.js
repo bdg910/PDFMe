@@ -1,4 +1,5 @@
 document.getElementById('mergeButton').addEventListener('click', mergePDFs);
+document.getElementById('ocrButton').addEventListener('click', extractText);
 
 async function mergePDFs() {
     const file1 = document.getElementById('file1').files[0];
@@ -17,36 +18,62 @@ async function mergePDFs() {
 
     const mergedPdf = await PDFLib.PDFDocument.create();
 
-    // Log the number of pages in each PDF for debugging
-    console.log('PDF 1 pages:', pdfDoc1.getPageCount());
-    console.log('PDF 2 pages:', pdfDoc2.getPageCount());
-
-    // Add pages from the first PDF
     for (let i = 0; i < pdfDoc1.getPageCount(); i++) {
         const [page] = await mergedPdf.copyPages(pdfDoc1, [i]);
         mergedPdf.addPage(page);
     }
 
-    // Add pages from the second PDF
     for (let i = 0; i < pdfDoc2.getPageCount(); i++) {
         const [page] = await mergedPdf.copyPages(pdfDoc2, [i]);
         mergedPdf.addPage(page);
     }
 
-    // Log the number of pages in the merged PDF for verification
-    console.log('Merged PDF pages:', mergedPdf.getPageCount());
-
-    // Save the merged PDF
     const mergedPdfBytes = await mergedPdf.save();
-
     const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
     const url = URL.createObjectURL(blob);
 
-    // Create a download link for the merged PDF
     const downloadLink = document.getElementById('downloadLink');
     downloadLink.href = url;
     downloadLink.download = 'merged.pdf';
     downloadLink.style.display = 'block';
+}
+
+async function extractText() {
+    const file = document.getElementById('ocrFile').files[0];
+
+    if (!file) {
+        alert('Please select a PDF file for OCR.');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = async function () {
+        const pdfData = new Uint8Array(reader.result);
+
+        // Convert PDF pages to images and extract text
+        const text = await extractTextFromPDF(pdfData);
+        
+        // Display extracted text
+        document.getElementById('ocrResult').textContent = text;
+
+        // Create downloadable text file
+        const textBlob = new Blob([text], { type: 'text/plain' });
+        const textUrl = URL.createObjectURL(textBlob);
+
+        const downloadTextLink = document.getElementById('downloadText');
+        downloadTextLink.href = textUrl;
+        downloadTextLink.download = 'extracted_text.txt';
+        downloadTextLink.style.display = 'block';
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+async function extractTextFromPDF(pdfData) {
+    return new Promise((resolve) => {
+        Tesseract.recognize(pdfData, 'eng', {
+            logger: (m) => console.log(m) // Logs OCR progress
+        }).then(({ data: { text } }) => resolve(text));
+    });
 }
 
 
