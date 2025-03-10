@@ -1,46 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Merger</title>
-    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.16.0/dist/pdf-lib.min.js"></script>
-</head>
-<body>
-    <h2>Merge PDFs</h2>
-    <input type="file" id="pdfInput" multiple accept="application/pdf">
-    <button onclick="mergePDFs()">Merge</button>
-    <a id="downloadLink" style="display:none" download="merged.pdf"></a>
+<script>
+    async function mergePDFs() {
+        console.log("Merge button clicked");
 
-    <script>
-        async function mergePDFs() {
-            const input = document.getElementById("pdfInput");
-            if (input.files.length < 2) {
-                alert("Please select at least two PDFs to merge.");
-                return;
-            }
-
-            const pdfDoc = await PDFLib.PDFDocument.create();
-            
-            for (const file of input.files) {
-                const reader = new FileReader();
-                reader.readAsArrayBuffer(file);
-                await new Promise(resolve => reader.onload = resolve);
-                
-                const existingPdf = await PDFLib.PDFDocument.load(reader.result);
-                const copiedPages = await pdfDoc.copyPages(existingPdf, existingPdf.getPageIndices());
-                copiedPages.forEach(page => pdfDoc.addPage(page));
-            }
-
-            const mergedPdfBytes = await pdfDoc.save();
-            const blob = new Blob([mergedPdfBytes], { type: "application/pdf" });
-
-            const link = document.getElementById("downloadLink");
-            link.href = URL.createObjectURL(blob);
-            link.style.display = "block";
-            link.textContent = "Download Merged PDF";
+        const input = document.getElementById("pdfInput");
+        if (input.files.length < 2) {
+            alert("Please select at least two PDFs to merge.");
+            console.error("Not enough PDFs selected");
+            return;
         }
-    </script>
-</body>
-</html>
+
+        console.log("Creating new PDF document...");
+        const pdfDoc = await PDFLib.PDFDocument.create();
+
+        for (const file of input.files) {
+            console.log("Reading file:", file.name);
+            const reader = new FileReader();
+            reader.readAsArrayBuffer(file);
+            await new Promise(resolve => reader.onload = resolve);
+
+            console.log("Loading PDF...");
+            const existingPdf = await PDFLib.PDFDocument.load(reader.result);
+            const copiedPages = await pdfDoc.copyPages(existingPdf, existingPdf.getPageIndices());
+            copiedPages.forEach(page => pdfDoc.addPage(page));
+        }
+
+        console.log("Saving merged PDF...");
+        const mergedPdfBytes = await pdfDoc.save();
+        const blob = new Blob([mergedPdfBytes], { type: "application/pdf" });
+
+        console.log("Creating download link...");
+        const link = document.getElementById("downloadLink");
+        link.href = URL.createObjectURL(blob);
+        link.style.display = "block";
+        link.textContent = "Download Merged PDF";
+
+        console.log("Merge complete!");
+    }
+</script>
 
