@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Merger</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Merge PDFs</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Merge PDFs Online</h1>
-        <input type="file" id="pdfInput" multiple accept="application/pdf">
-        <button onclick="mergePDFs()">Merge PDFs</button>
-        <a id="downloadLink" style="display: none;" download="merged.pdf">Download Merged PDF</a>
+        <h1>Merge PDF Files</h1>
+        <input type="file" id="file1" accept="application/pdf">
+        <input type="file" id="file2" accept="application/pdf">
+        <button id="mergeButton">Merge PDFs</button>
+        <a id="downloadLink" style="display:none;">Download Merged PDF</a>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.16.0/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
