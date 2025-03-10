@@ -26,13 +26,19 @@ async function mergePDFs() {
     // Create a new PDF document for the merged result
     const mergedPdf = await PDFLib.PDFDocument.create();
 
-    // Copy pages from the first PDF
-    const pages1 = await mergedPdf.copyPages(pdfDoc1, pdfDoc1.getPages().map((_, index) => index));
-    pages1.forEach(page => mergedPdf.addPage(page));
+    // Copy pages from the first PDF (file 1)
+    const pages1 = pdfDoc1.getPages();
+    pages1.forEach(page => {
+        const [copiedPage] = await mergedPdf.copyPages(pdfDoc1, [page.index]);
+        mergedPdf.addPage(copiedPage);
+    });
 
-    // Copy pages from the second PDF
-    const pages2 = await mergedPdf.copyPages(pdfDoc2, pdfDoc2.getPages().map((_, index) => index));
-    pages2.forEach(page => mergedPdf.addPage(page));
+    // Copy pages from the second PDF (file 2)
+    const pages2 = pdfDoc2.getPages();
+    pages2.forEach(page => {
+        const [copiedPage] = await mergedPdf.copyPages(pdfDoc2, [page.index]);
+        mergedPdf.addPage(copiedPage);
+    });
 
     // Save the merged PDF as a byte array
     const mergedPdfBytes = await mergedPdf.save();
@@ -47,5 +53,6 @@ async function mergePDFs() {
     downloadLink.download = 'merged.pdf';
     downloadLink.style.display = 'inline';  // Show the download link
 }
+
 
 
