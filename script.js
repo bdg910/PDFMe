@@ -37,3 +37,35 @@ document.getElementById("mergeButton").addEventListener("click", async function 
     }
 });
 
+// Extract text from PDF
+document.getElementById("extractButton").addEventListener("click", async function () {
+    const fileInput = document.getElementById("pdfFiles");
+    const files = fileInput.files;
+
+    if (files.length === 0) {
+        alert("Please select a PDF file to extract text from.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("pdf", files[0]);
+
+    try {
+        const response = await fetch("/extract", {
+            method: "POST",
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to extract text");
+        }
+
+        const text = await response.text();
+        alert("Extracted Text:\n" + text);
+    } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred while extracting text.");
+    }
+});
+
+
