@@ -19,11 +19,19 @@
 <body>
     <h1>Merge PDFs & Extract Text</h1>
 
-    <label>Select PDFs for Merging:</label>
-    <input type="file" id="mergePdfFiles" multiple>
+    <!-- PDF Merging Section -->
+    <h2>Merge PDFs</h2>
+    <label>Select first PDF:</label>
+    <input type="file" id="mergePdfFile1">
+    
+    <label>Select second PDF:</label>
+    <input type="file" id="mergePdfFile2">
+    
     <button id="mergeButton">Merge PDFs</button>
 
-    <label>Select a PDF for Text Extraction:</label>
+    <!-- PDF Text Extraction Section -->
+    <h2>Extract Text from PDF</h2>
+    <label>Select a PDF for text extraction:</label>
     <input type="file" id="extractPdfFile">
     <button id="extractButton">Extract Text</button>
 
