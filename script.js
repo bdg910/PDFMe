@@ -29,6 +29,7 @@ async function mergePDFs() {
     // Copy pages from the first PDF (file 1)
     const pages1 = pdfDoc1.getPages();
     for (const page of pages1) {
+        // Copy page from pdfDoc1
         const [copiedPage] = await mergedPdf.copyPages(pdfDoc1, [page.index]);
         mergedPdf.addPage(copiedPage);
     }
@@ -36,6 +37,7 @@ async function mergePDFs() {
     // Copy pages from the second PDF (file 2)
     const pages2 = pdfDoc2.getPages();
     for (const page of pages2) {
+        // Copy page from pdfDoc2
         const [copiedPage] = await mergedPdf.copyPages(pdfDoc2, [page.index]);
         mergedPdf.addPage(copiedPage);
     }
